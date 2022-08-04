@@ -4,17 +4,52 @@
  */
 package vista;
 
+import java.awt.event.ActionListener;
+import javax.swing.JTextField;
+import javax.swing.table.DefaultTableModel;
+
 /**
  *
  * @author Paul
  */
 public class VentanaPrincipal extends javax.swing.JFrame {
 
+    
+    DefaultTableModel modeloHistorico;
     /**
      * Creates new form VentanaPrincipal
      */
-    public VentanaPrincipal() {
+    public VentanaPrincipal() 
+    {
         initComponents();
+        modeloHistorico = (DefaultTableModel) jTableHistorico.getModel();
+    }
+
+    public String getTxtCantidad() {
+        return txtCantidad.getText();
+    }
+
+    public void setTxtCantidad(String _txt) {
+        this.txtCantidad.setText(_txt);
+    }
+    
+    public void addBtnAgregarYearListener(ActionListener actionListener)
+    {
+        btnAgregarYear.addActionListener(actionListener);
+    }
+    
+    public void addBtnBorrarYearListener(ActionListener actionListener)
+    {
+        btnBorrarYear.addActionListener(actionListener);
+    }
+    
+    public void addBtnModificarYearListener(ActionListener actionListener)
+    {
+        btnModificarYear.addActionListener(actionListener);
+    }
+    public void addBtnNuevoPronosticoListener(ActionListener actionListener)
+    {
+        btnNuevoPronostico.addActionListener(actionListener);
     }
 
     /**
@@ -34,8 +69,8 @@ public class VentanaPrincipal extends javax.swing.JFrame {
         txtCantidad = new javax.swing.JTextField();
         pnlControles = new javax.swing.JPanel();
         btnBorrarYear = new javax.swing.JButton();
-        btnModificaYear = new javax.swing.JButton();
-        btnNuevo = new javax.swing.JButton();
+        btnModificarYear = new javax.swing.JButton();
+        btnNuevoPronostico = new javax.swing.JButton();
         btnAgregarYear = new javax.swing.JButton();
         pnlHistorico = new javax.swing.JPanel();
         jScrollPane3 = new javax.swing.JScrollPane();
@@ -103,9 +138,9 @@ public class VentanaPrincipal extends javax.swing.JFrame {
 
         btnBorrarYear.setText("Borrar Año");
 
-        btnModificaYear.setText("Modifica Año");
+        btnModificarYear.setText("Modifica Año");
 
-        btnNuevo.setText("Nuevo Pronostico");
+        btnNuevoPronostico.setText("Nuevo Pronostico");
 
         btnAgregarYear.setText("Agregar Año");
 
@@ -117,8 +152,8 @@ public class VentanaPrincipal extends javax.swing.JFrame {
                 .addGap(23, 23, 23)
                 .addGroup(pnlControlesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addComponent(btnBorrarYear, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(btnModificaYear, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(btnNuevo, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(btnModificarYear, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(btnNuevoPronostico, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(btnAgregarYear, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addContainerGap(34, Short.MAX_VALUE))
         );
@@ -130,26 +165,40 @@ public class VentanaPrincipal extends javax.swing.JFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(btnBorrarYear)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(btnModificaYear)
+                .addComponent(btnModificarYear)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(btnNuevo)
+                .addComponent(btnNuevoPronostico)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         pnlHistorico.setBorder(javax.swing.BorderFactory.createTitledBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)), "Historico Año"));
 
+        jTableHistorico.getTableHeader().setReorderingAllowed(false);
         jTableHistorico.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {"X", "Y", "Yn- Yn-1/Yn-1", "Yn- Yn-1/Yn-1"},
                 {null, null, "", null},
                 {null, null, null, null},
                 {null, null, null, null}
             },
             new String [] {
-                "Año", "Cantidad de Ventas", "", ""
+                "Año", "Cantidad de Ventas", "Yn- Yn-1/Yn-1", "Yn- Yn-1/Yn-1"
             }
-        ));
+        ) {
+            boolean[] canEdit = new boolean [] {
+                false, false, false, false
+            };
+
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit [columnIndex];
+            }
+        });
         jScrollPane3.setViewportView(jTableHistorico);
+        if (jTableHistorico.getColumnModel().getColumnCount() > 0) {
+            jTableHistorico.getColumnModel().getColumn(0).setResizable(false);
+            jTableHistorico.getColumnModel().getColumn(1).setResizable(false);
+            jTableHistorico.getColumnModel().getColumn(2).setResizable(false);
+            jTableHistorico.getColumnModel().getColumn(3).setResizable(false);
+        }
 
         javax.swing.GroupLayout pnlHistoricoLayout = new javax.swing.GroupLayout(pnlHistorico);
         pnlHistorico.setLayout(pnlHistoricoLayout);
@@ -288,8 +337,8 @@ public class VentanaPrincipal extends javax.swing.JFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnAgregarYear;
     private javax.swing.JButton btnBorrarYear;
-    private javax.swing.JButton btnModificaYear;
-    private javax.swing.JButton btnNuevo;
+    private javax.swing.JButton btnModificarYear;
+    private javax.swing.JButton btnNuevoPronostico;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JScrollPane jScrollPane3;

@@ -184,8 +184,8 @@
                   <EmptySpace min="-2" pref="23" max="-2" attributes="0"/>
                   <Group type="103" groupAlignment="0" max="-2" attributes="0">
                       <Component id="btnBorrarYear" max="32767" attributes="0"/>
-                      <Component id="btnModificaYear" max="32767" attributes="0"/>
-                      <Component id="btnNuevo" max="32767" attributes="0"/>
+                      <Component id="btnModificarYear" max="32767" attributes="0"/>
+                      <Component id="btnNuevoPronostico" max="32767" attributes="0"/>
                       <Component id="btnAgregarYear" max="32767" attributes="0"/>
                   </Group>
                   <EmptySpace pref="34" max="32767" attributes="0"/>
@@ -200,9 +200,9 @@
                   <EmptySpace max="-2" attributes="0"/>
                   <Component id="btnBorrarYear" min="-2" max="-2" attributes="0"/>
                   <EmptySpace max="-2" attributes="0"/>
-                  <Component id="btnModificaYear" min="-2" max="-2" attributes="0"/>
+                  <Component id="btnModificarYear" min="-2" max="-2" attributes="0"/>
                   <EmptySpace max="-2" attributes="0"/>
-                  <Component id="btnNuevo" min="-2" max="-2" attributes="0"/>
+                  <Component id="btnNuevoPronostico" min="-2" max="-2" attributes="0"/>
                   <EmptySpace max="32767" attributes="0"/>
               </Group>
           </Group>
@@ -214,12 +214,12 @@
             <Property name="text" type="java.lang.String" value="Borrar A&#xf1;o"/>
           </Properties>
         </Component>
-        <Component class="javax.swing.JButton" name="btnModificaYear">
+        <Component class="javax.swing.JButton" name="btnModificarYear">
           <Properties>
             <Property name="text" type="java.lang.String" value="Modifica A&#xf1;o"/>
           </Properties>
         </Component>
-        <Component class="javax.swing.JButton" name="btnNuevo">
+        <Component class="javax.swing.JButton" name="btnNuevoPronostico">
           <Properties>
             <Property name="text" type="java.lang.String" value="Nuevo Pronostico"/>
           </Properties>
@@ -275,51 +275,35 @@
             <Component class="javax.swing.JTable" name="jTableHistorico">
               <Properties>
                 <Property name="model" type="javax.swing.table.TableModel" editor="org.netbeans.modules.form.editors2.TableModelEditor">
-                  <Table columnCount="4" rowCount="4">
-                    <Column editable="true" title="A&#xf1;o" type="java.lang.Object">
-                      <Data value="X"/>
-                      <Data value="null"/>
-                      <Data value="null"/>
-                      <Data value="null"/>
-                    </Column>
-                    <Column editable="true" title="Cantidad de Ventas" type="java.lang.Object">
-                      <Data value="Y"/>
-                      <Data value="null"/>
-                      <Data value="null"/>
-                      <Data value="null"/>
-                    </Column>
-                    <Column editable="true" title="" type="java.lang.Object">
-                      <Data value="Yn- Yn-1/Yn-1"/>
+                  <Table columnCount="4" rowCount="3">
+                    <Column editable="false" title="A&#xf1;o" type="java.lang.Object"/>
+                    <Column editable="false" title="Cantidad de Ventas" type="java.lang.Object"/>
+                    <Column editable="false" title="Yn- Yn-1/Yn-1" type="java.lang.Object">
                       <Data value=""/>
                       <Data value="null"/>
                       <Data value="null"/>
                     </Column>
-                    <Column editable="true" title="" type="java.lang.Object">
-                      <Data value="Yn- Yn-1/Yn-1"/>
-                      <Data value="null"/>
-                      <Data value="null"/>
-                      <Data value="null"/>
-                    </Column>
+                    <Column editable="false" title="Yn- Yn-1/Yn-1" type="java.lang.Object"/>
                   </Table>
                 </Property>
                 <Property name="columnModel" type="javax.swing.table.TableColumnModel" editor="org.netbeans.modules.form.editors2.TableColumnModelEditor">
                   <TableColumnModel selectionModel="0">
-                    <Column maxWidth="-1" minWidth="-1" prefWidth="-1" resizable="true">
+                    <Column maxWidth="-1" minWidth="-1" prefWidth="-1" resizable="false">
                       <Title/>
                       <Editor/>
                       <Renderer/>
                     </Column>
-                    <Column maxWidth="-1" minWidth="-1" prefWidth="-1" resizable="true">
+                    <Column maxWidth="-1" minWidth="-1" prefWidth="-1" resizable="false">
                       <Title/>
                       <Editor/>
                       <Renderer/>
                     </Column>
-                    <Column maxWidth="-1" minWidth="-1" prefWidth="-1" resizable="true">
+                    <Column maxWidth="-1" minWidth="-1" prefWidth="-1" resizable="false">
                       <Title/>
                       <Editor/>
                       <Renderer/>
                     </Column>
-                    <Column maxWidth="-1" minWidth="-1" prefWidth="-1" resizable="true">
+                    <Column maxWidth="-1" minWidth="-1" prefWidth="-1" resizable="false">
                       <Title/>
                       <Editor/>
                       <Renderer/>
@@ -330,6 +314,9 @@
                   <TableHeader reorderingAllowed="true" resizingAllowed="true"/>
                 </Property>
               </Properties>
+              <AuxValues>
+                <AuxValue name="JavaCodeGenerator_InitCodePre" type="java.lang.String" value="jTableHistorico.getTableHeader().setReorderingAllowed(false);"/>
+              </AuxValues>
             </Component>
           </SubComponents>
         </Container>

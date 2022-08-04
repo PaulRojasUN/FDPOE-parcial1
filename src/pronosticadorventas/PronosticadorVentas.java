@@ -4,6 +4,10 @@
  */
 package pronosticadorventas;
 
+import controlador.ControladorPronosticador;
+import modelo.ModeloPronosticador;
+import vista.VentanaPrincipal;
+
 /**
  *
  * @author Paul
@@ -13,8 +17,11 @@ public class PronosticadorVentas {
     /**
      * @param args the command line arguments
      */
-    public static void main(String[] args) {
-        // TODO code application logic here
+    public static void main(String[] args) 
+    {
+        ModeloPronosticador modelo = new ModeloPronosticador();
+        VentanaPrincipal ventana = new VentanaPrincipal();
+        ControladorPronosticador controlador =  new ControladorPronosticador(modelo, ventana);
     }
     
 }
