@@ -49,7 +49,6 @@ public class ModeloPronosticador
      public ArrayList<ArrayList<String>> operarCantidadesVenta(ArrayList<String> _valores)
      {
          ArrayList<ArrayList<String>> lista = new ArrayList<ArrayList<String>>();
-         ArrayList<String> auxLista;
          int cantidad = _valores.size();
          for (int i = 0; i < cantidad; i++)
          {
@@ -65,6 +64,23 @@ public class ModeloPronosticador
                  lista.add(new ArrayList<String>(Arrays.asList(diferencia(valor1,valor2)+"", calcularPorcentajeVar(valor1,valor2)+"")));
              }
              
+         }
+         return lista;
+     }
+     
+     public ArrayList<String> calcularPronostico(float _lastCantidad, int _cantidad,float _promedio)
+     {
+         ArrayList<String> lista = new ArrayList<String>();
+         for (int i = 0; i < _cantidad; i++)
+         {
+             if (i == 0)
+             {
+                 lista.add(_lastCantidad+_promedio*_lastCantidad+"");
+             }
+             else
+             {
+                 lista.add((parseFloat(lista.get(i-1))+(_promedio*parseFloat(lista.get(i-1))))+"");
+             }
          }
          return lista;
      }

@@ -17,6 +17,7 @@ public class VentanaPrincipal extends javax.swing.JFrame {
 
     
     DefaultTableModel modeloHistorico;
+    DefaultTableModel modeloPronostico;
     /**
      * Creates new form VentanaPrincipal
      */
@@ -24,6 +25,7 @@ public class VentanaPrincipal extends javax.swing.JFrame {
     {
         initComponents();
         modeloHistorico = (DefaultTableModel) jTableHistorico.getModel();
+        modeloPronostico = (DefaultTableModel) jTablePronostico.getModel();
     }
 
     public String getValorHistorico(int _fila, int _columna)
@@ -46,6 +48,10 @@ public class VentanaPrincipal extends javax.swing.JFrame {
         modeloHistorico.setValueAt(_value+"", _index, 1);
     }
         
+    public void setCantidadPronostico(String _txt)
+    {
+        txtCantidad.setText(_txt);
+    }
     
     
     public void setTotalPorcentajes(String _txt)
@@ -97,6 +103,11 @@ public class VentanaPrincipal extends javax.swing.JFrame {
         this.txtPromedio.setText(_txt);
     }
     
+    public String getTxtPromedio()
+    {
+        return txtPromedio.getText();
+    }
+    
     public void addBtnAgregarYearListener(ActionListener actionListener)
     {
         btnAgregarYear.addActionListener(actionListener);
@@ -146,6 +157,24 @@ public class VentanaPrincipal extends javax.swing.JFrame {
         for (int i = cantidad - 1; i >= 0; i--)
         {
             eliminarFilaHistorico(i);
+        }
+    }
+    
+    public void vaciarPronostico()
+    {
+        int cantidad = jTablePronostico.getRowCount();
+        for (int i = cantidad - 1; i >= 0; i--)
+        {
+            modeloPronostico.removeRow(i);
+        }
+    }
+    
+    public void llenarPronosticos(ArrayList<String> _lista)
+    {
+        int cantidad = _lista.size();
+        for (int i = 0; i < cantidad; i++)
+        {
+            modeloPronostico.addRow(new Object[]{getCantidadFilasHistorica()+1+i+"",_lista.get(i)+""});
         }
     }
     
@@ -284,7 +313,7 @@ public class VentanaPrincipal extends javax.swing.JFrame {
 
             },
             new String [] {
-                "Año", "Cantidad de Ventas", "Yn- Yn-1/Yn-1", "Yn- Yn-1/Yn-1"
+                "Año", "Cantidad de Ventas", "Yn- Yn-1", "(Yn- Yn-1)/Yn-1"
             }
         ) {
             boolean[] canEdit = new boolean [] {
@@ -339,18 +368,28 @@ public class VentanaPrincipal extends javax.swing.JFrame {
 
         lblPromedio.setText("Promedio de Variació:");
 
+        jTablePronostico.getTableHeader().setReorderingAllowed(false);
         jTablePronostico.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null},
-                {null, null},
-                {null, null},
-                {null, null}
+
             },
             new String [] {
                 "Año", "Pronóstico Ventas"
             }
-        ));
+        ) {
+            boolean[] canEdit = new boolean [] {
+                false, false
+            };
+
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit [columnIndex];
+            }
+        });
         jScrollPane2.setViewportView(jTablePronostico);
+        if (jTablePronostico.getColumnModel().getColumnCount() > 0) {
+            jTablePronostico.getColumnModel().getColumn(0).setResizable(false);
+            jTablePronostico.getColumnModel().getColumn(1).setResizable(false);
+        }
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);

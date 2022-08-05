@@ -48,41 +48,38 @@ public class ControladorPronosticador
                 
                 if (!"".equals(ventana.getTxtCantidadVenta()))
                 {
-                    float cantidadVentas = parseFloat(ventana.getTxtCantidadVenta());
+                    
                     try 
                     {
+                        float cantidadVentas = parseFloat(ventana.getTxtCantidadVenta());
+                        if (cantidadVentas>0){
+
+                            System.out.println("Cantidad: "+ventana.getCantidadFilasHistorica());
+                            if (ventana.getCantidadFilasHistorica() == 0)
+                            {
+                                ventana.agregarFilaHistorica(1+"", cantidadVentas+"", "", "");
+                            }
+                            else
+                            {
+                                System.out.println(ventana.getValoresDeColumnaHistorico(1, 0));
+                                ventana.agregarFilaHistorica(ventana.getCantidadFilasHistorica()+1+"", cantidadVentas+"", "", "");
+                                ventana.llenarHistorico(modelo.operarCantidadesVenta(ventana.getValoresDeColumnaHistorico(1, 0)));
+
+                                ventana.setTotalPorcentajes(modelo.sumarLista(ventana.getValoresDeColumnaHistorico(3, 1))+"");
 
 
-                        System.out.println("Cantidad: "+ventana.getCantidadFilasHistorica());
-                        if (ventana.getCantidadFilasHistorica() == 0)
-                        {
-                            ventana.agregarFilaHistorica(1+"", cantidadVentas+"", "", "");
+                            }
                         }
                         else
                         {
-                            System.out.println(ventana.getValoresDeColumnaHistorico(1, 0));
-                            ventana.agregarFilaHistorica(ventana.getCantidadFilasHistorica()+1+"", cantidadVentas+"", "", "");
-                            ventana.llenarHistorico(modelo.operarCantidadesVenta(ventana.getValoresDeColumnaHistorico(1, 0)));
-                            
-                            /*
-                            int year = ventana.getCantidadFilasHistorica()+1;
-                            int cantidad = parseInt(ventana.getTxtCantidadVenta());
-                            float diferencia = modelo.diferencia(cantidadVentas, parseFloat(ventana.getValorHistorico(ventana.getCantidadFilasHistorica()-1, 1)));
-                            float porcentaje = modelo.calcularPorcentajeVar(cantidadVentas, parseFloat(ventana.getValorHistorico(ventana.getCantidadFilasHistorica()-1,1)));
-
-                            ventana.agregarFilaHistorica(year+"", cantidad+"", diferencia+"", porcentaje+"");
-                            */
-                            ventana.setTotalPorcentajes(modelo.sumarLista(ventana.getValoresDeColumnaHistorico(3, 1))+"");
-                            
-                            
+                            System.out.println("Ingrese Valores Mayores a cero");
                         }
-                        ventana.setTxtCantidadVenta("");
                     } 
                     catch (Exception ex)
                     {
-                        System.out.println("Algo falló");
-                        ex.printStackTrace();
+                        System.out.println("Ingrese Valores Válidos");
                     }
+                    ventana.setTxtCantidadVenta("");
                 } else {
                    System.out.println("Ingrese una cantidad de ventas");
                 }
@@ -112,12 +109,20 @@ public class ControladorPronosticador
                     int respuesta;
                     try
                     {
-                    respuesta = parseInt(JOptionPane.showInputDialog("Asigne la nueva cantidad"));
-                    
-                    ventana.setCantidadVentasHistorico(respuesta, ventana.getFilaSeleccionadaHistorico());
-                    ventana.llenarHistorico(modelo.operarCantidadesVenta(ventana.getValoresDeColumnaHistorico(1, 0)));
-                    ventana.setTotalPorcentajes(modelo.sumarLista(ventana.getValoresDeColumnaHistorico(3, 1))+"");
-                    } catch (Exception ex)
+                        respuesta = parseInt(JOptionPane.showInputDialog("Asigne la nueva cantidad"));
+
+                        if (respuesta > 0)
+                        {
+                        ventana.setCantidadVentasHistorico(respuesta, ventana.getFilaSeleccionadaHistorico());
+                        ventana.llenarHistorico(modelo.operarCantidadesVenta(ventana.getValoresDeColumnaHistorico(1, 0)));
+                        ventana.setTotalPorcentajes(modelo.sumarLista(ventana.getValoresDeColumnaHistorico(3, 1))+"");
+                        }
+                        else
+                        {
+                            System.out.println("Ingrese valores mayores a cero");
+                        }
+                    } 
+                    catch (Exception ex)
                     {
                         System.out.println("Ingrese un dato válido");
                     }
@@ -126,20 +131,47 @@ public class ControladorPronosticador
             else if (e.getActionCommand().equalsIgnoreCase("Nuevo Pronóstico"))
             {
                 ventana.vaciarHistorico();
+                ventana.vaciarPronostico();
+                ventana.setTxtPromedio("");
+                ventana.setCantidadPronostico("");
             }
             else if (e.getActionCommand().equalsIgnoreCase("Calcular"))
             {
-                if (ventana.getCantidadFilasHistorica()>=3)
+                try
                 {
-                    ventana.setTxtPromedio(modelo.calcularPromedioVar(ventana.getValoresDeColumnaHistorico(3, 1))+"");
-                }
-                else
+                    int cantidadPronostico = parseInt(ventana.getTxtCantidad());
+                    
+                    if (ventana.getCantidadFilasHistorica()>=3)
+                    {
+                        if (cantidadPronostico>=2)
+                        {
+                            ventana.vaciarPronostico();
+                            ventana.setTxtPromedio(modelo.calcularPromedioVar(ventana.getValoresDeColumnaHistorico(3, 1))+"");
+                            ventana.llenarPronosticos(modelo.calcularPronostico(
+                                   parseFloat(ventana.getValorHistorico(ventana.getCantidadFilasHistorica()-1,1)),
+                                   cantidadPronostico, 
+                                   parseFloat(ventana.getTxtPromedio())));
+                        }
+                        else
+                        {
+                            System.out.println("Por favor, ingrese un número mayor o igual a dos");
+                        }
+                    }
+                    else
+                    {
+                        System.out.println("Agregue como mínimo tres cantidades de Ventas");
+                    }
+                      
+                } 
+                catch (Exception ex)
                 {
-                    System.out.println("Agregue como mínimo tres cantidad de Ventas");
+                    System.out.println("Ingrese una cantidad entera válida");
                 }
+
                 
             }
         }
+     
+        }
         
     }
-}
