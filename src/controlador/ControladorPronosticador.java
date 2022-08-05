@@ -32,6 +32,9 @@ public class ControladorPronosticador
         ventana.addBtnAgregarYearListener(btnListener);
         ventana.addBtnBorrarYearListener(btnListener);
         ventana.addBtnModificarYearListener(btnListener);
+        ventana.addBtnNuevoPronosticoListener(btnListener);
+        ventana.addBtnCalcularListener(btnListener);
+        
     }
     
     class BtnListener implements ActionListener
@@ -119,6 +122,22 @@ public class ControladorPronosticador
                         System.out.println("Ingrese un dato válido");
                     }
                 }
+            } 
+            else if (e.getActionCommand().equalsIgnoreCase("Nuevo Pronóstico"))
+            {
+                ventana.vaciarHistorico();
+            }
+            else if (e.getActionCommand().equalsIgnoreCase("Calcular"))
+            {
+                if (ventana.getCantidadFilasHistorica()>=3)
+                {
+                    ventana.setTxtPromedio(modelo.calcularPromedioVar(ventana.getValoresDeColumnaHistorico(3, 1))+"");
+                }
+                else
+                {
+                    System.out.println("Agregue como mínimo tres cantidad de Ventas");
+                }
+                
             }
         }
         

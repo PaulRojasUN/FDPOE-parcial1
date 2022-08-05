@@ -92,6 +92,11 @@ public class VentanaPrincipal extends javax.swing.JFrame {
         this.txtCantidad.setText(_txt);
     }
     
+    public void setTxtPromedio(String _txt)
+    {
+        this.txtPromedio.setText(_txt);
+    }
+    
     public void addBtnAgregarYearListener(ActionListener actionListener)
     {
         btnAgregarYear.addActionListener(actionListener);
@@ -110,6 +115,11 @@ public class VentanaPrincipal extends javax.swing.JFrame {
     {
         btnNuevoPronostico.addActionListener(actionListener);
     }
+    
+    public void addBtnCalcularListener(ActionListener actionListener)
+    {
+        btnCalcular.addActionListener(actionListener);
+    }
 
     public int getFilaSeleccionadaHistorico()
     {
@@ -127,6 +137,15 @@ public class VentanaPrincipal extends javax.swing.JFrame {
         for (int i = 0; i < cantidad; i++)
         {
             modeloHistorico.setValueAt((i+1)+"",i,0);
+        }
+    }
+    
+    public void vaciarHistorico()
+    {
+        int cantidad = getCantidadFilasHistorica();
+        for (int i = cantidad - 1; i >= 0; i--)
+        {
+            eliminarFilaHistorico(i);
         }
     }
     
@@ -227,7 +246,7 @@ public class VentanaPrincipal extends javax.swing.JFrame {
 
         btnModificarYear.setText("Modifica Año");
 
-        btnNuevoPronostico.setText("Nuevo Pronostico");
+        btnNuevoPronostico.setText("Nuevo Pronóstico");
 
         btnAgregarYear.setText("Agregar Año");
 
