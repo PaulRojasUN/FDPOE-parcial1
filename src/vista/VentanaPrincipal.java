@@ -5,6 +5,7 @@
 package vista;
 
 import java.awt.event.ActionListener;
+import java.util.ArrayList;
 import javax.swing.JTextField;
 import javax.swing.table.DefaultTableModel;
 
@@ -25,6 +26,58 @@ public class VentanaPrincipal extends javax.swing.JFrame {
         modeloHistorico = (DefaultTableModel) jTableHistorico.getModel();
     }
 
+    public String getValorHistorico(int _fila, int _columna)
+    {
+        return (String) modeloHistorico.getValueAt(_fila, _columna);
+    }
+    
+    public void setTxtCantidadVenta(String _txt)
+    {
+        txtCantidadVenta.setText(_txt);
+    }
+    
+    public int getCantidadFilasHistorica()
+    {
+        return jTableHistorico.getRowCount();
+    }
+    
+    
+    public void setTotalPorcentajes(String _txt)
+    {
+        lblSumaTotal.setText(_txt);
+    }
+    
+    public void llenarHistorico(ArrayList<ArrayList<String>> _lista)
+    {
+        int cantidad = _lista.size();
+        for (int i = 0; i < cantidad; i++)
+        {
+            modeloHistorico.setValueAt(_lista.get(i).get(0), i, 2);
+            modeloHistorico.setValueAt(_lista.get(i).get(1), i, 3);
+        }
+    }
+    
+    public ArrayList<String> getValoresDeColumnaHistorico(int _columna, int _fila)
+    {
+        int cantidad = getCantidadFilasHistorica();
+        ArrayList<String> lista = new ArrayList<String>();
+        for (int i = _fila; i < cantidad; i++)
+        {
+            lista.add(getValorHistorico(i,_columna));
+        }
+        return lista;
+    }
+    
+    
+    public void agregarFilaHistorica(String _noYear, String _cantidadVentas, String _diferencia, String _variacion)
+    {
+        modeloHistorico.addRow(new Object[]{_noYear, _cantidadVentas, _diferencia, _variacion});
+    }
+    
+    public String getTxtCantidadVenta() {
+        return txtCantidadVenta.getText();
+    }
+    
     public String getTxtCantidad() {
         return txtCantidad.getText();
     }
@@ -52,6 +105,26 @@ public class VentanaPrincipal extends javax.swing.JFrame {
         btnNuevoPronostico.addActionListener(actionListener);
     }
 
+    public int getFilaSeleccionadaHistorico()
+    {
+        return jTableHistorico.getSelectedRow();
+    }
+    
+    public void eliminarFilaHistorico(int _index)
+    {
+        modeloHistorico.removeRow(_index);
+    }
+    
+    public void reorganizarYearsAscendente()
+    {
+        int cantidad = getCantidadFilasHistorica();
+        for (int i = 0; i < cantidad; i++)
+        {
+            modeloHistorico.setValueAt((i+1)+"",i,0);
+        }
+    }
+    
+    
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -67,6 +140,7 @@ public class VentanaPrincipal extends javax.swing.JFrame {
         pnlYears = new javax.swing.JPanel();
         lblCantidad = new javax.swing.JLabel();
         txtCantidad = new javax.swing.JTextField();
+        btnCalcular = new javax.swing.JButton();
         pnlControles = new javax.swing.JPanel();
         btnBorrarYear = new javax.swing.JButton();
         btnModificarYear = new javax.swing.JButton();
@@ -75,6 +149,8 @@ public class VentanaPrincipal extends javax.swing.JFrame {
         pnlHistorico = new javax.swing.JPanel();
         jScrollPane3 = new javax.swing.JScrollPane();
         jTableHistorico = new javax.swing.JTable();
+        lblTotal = new javax.swing.JLabel();
+        lblSumaTotal = new javax.swing.JLabel();
         jPanel1 = new javax.swing.JPanel();
         lblPromedio = new javax.swing.JLabel();
         txtPromedio = new javax.swing.JTextField();
@@ -113,6 +189,8 @@ public class VentanaPrincipal extends javax.swing.JFrame {
 
         lblCantidad.setText("Cantidad:");
 
+        btnCalcular.setText("Calcular");
+
         javax.swing.GroupLayout pnlYearsLayout = new javax.swing.GroupLayout(pnlYears);
         pnlYears.setLayout(pnlYearsLayout);
         pnlYearsLayout.setHorizontalGroup(
@@ -121,8 +199,10 @@ public class VentanaPrincipal extends javax.swing.JFrame {
                 .addGap(25, 25, 25)
                 .addComponent(lblCantidad)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(txtCantidad, javax.swing.GroupLayout.PREFERRED_SIZE, 203, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(31, 31, 31))
+                .addComponent(txtCantidad, javax.swing.GroupLayout.PREFERRED_SIZE, 102, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(18, 18, 18)
+                .addComponent(btnCalcular)
+                .addGap(39, 39, 39))
         );
         pnlYearsLayout.setVerticalGroup(
             pnlYearsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -130,8 +210,9 @@ public class VentanaPrincipal extends javax.swing.JFrame {
                 .addGap(13, 13, 13)
                 .addGroup(pnlYearsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(lblCantidad)
-                    .addComponent(txtCantidad, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(17, Short.MAX_VALUE))
+                    .addComponent(txtCantidad, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(btnCalcular))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         pnlControles.setBorder(javax.swing.BorderFactory.createTitledBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)), "Controles"));
@@ -160,7 +241,6 @@ public class VentanaPrincipal extends javax.swing.JFrame {
         pnlControlesLayout.setVerticalGroup(
             pnlControlesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(pnlControlesLayout.createSequentialGroup()
-                .addContainerGap()
                 .addComponent(btnAgregarYear)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(btnBorrarYear)
@@ -176,9 +256,7 @@ public class VentanaPrincipal extends javax.swing.JFrame {
         jTableHistorico.getTableHeader().setReorderingAllowed(false);
         jTableHistorico.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {null, null, "", null},
-                {null, null, null, null},
-                {null, null, null, null}
+
             },
             new String [] {
                 "Año", "Cantidad de Ventas", "Yn- Yn-1/Yn-1", "Yn- Yn-1/Yn-1"
@@ -200,13 +278,24 @@ public class VentanaPrincipal extends javax.swing.JFrame {
             jTableHistorico.getColumnModel().getColumn(3).setResizable(false);
         }
 
+        lblTotal.setText("Total Suma Porcentajes de Variación: ");
+
+        lblSumaTotal.setText("0");
+
         javax.swing.GroupLayout pnlHistoricoLayout = new javax.swing.GroupLayout(pnlHistorico);
         pnlHistorico.setLayout(pnlHistoricoLayout);
         pnlHistoricoLayout.setHorizontalGroup(
             pnlHistoricoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(pnlHistoricoLayout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 505, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGroup(pnlHistoricoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(pnlHistoricoLayout.createSequentialGroup()
+                        .addContainerGap()
+                        .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 505, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(pnlHistoricoLayout.createSequentialGroup()
+                        .addGap(144, 144, 144)
+                        .addComponent(lblTotal)
+                        .addGap(76, 76, 76)
+                        .addComponent(lblSumaTotal)))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         pnlHistoricoLayout.setVerticalGroup(
@@ -214,7 +303,11 @@ public class VentanaPrincipal extends javax.swing.JFrame {
             .addGroup(pnlHistoricoLayout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 182, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(30, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(pnlHistoricoLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(lblTotal)
+                    .addComponent(lblSumaTotal))
+                .addContainerGap(8, Short.MAX_VALUE))
         );
 
         jPanel1.setBorder(javax.swing.BorderFactory.createTitledBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)), "Pronostico de Ventas"));
@@ -287,13 +380,13 @@ public class VentanaPrincipal extends javax.swing.JFrame {
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(pnlDatos, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(pnlYears, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addComponent(pnlYears, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                     .addComponent(pnlControles, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(pnlHistorico, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
                 .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(51, Short.MAX_VALUE))
+                .addContainerGap(62, Short.MAX_VALUE))
         );
 
         pack();
@@ -337,6 +430,7 @@ public class VentanaPrincipal extends javax.swing.JFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnAgregarYear;
     private javax.swing.JButton btnBorrarYear;
+    private javax.swing.JButton btnCalcular;
     private javax.swing.JButton btnModificarYear;
     private javax.swing.JButton btnNuevoPronostico;
     private javax.swing.JPanel jPanel1;
@@ -347,6 +441,8 @@ public class VentanaPrincipal extends javax.swing.JFrame {
     private javax.swing.JLabel lblCantidad;
     private javax.swing.JLabel lblCantidadVenta;
     private javax.swing.JLabel lblPromedio;
+    private javax.swing.JLabel lblSumaTotal;
+    private javax.swing.JLabel lblTotal;
     private javax.swing.JPanel pnlControles;
     private javax.swing.JPanel pnlDatos;
     private javax.swing.JPanel pnlHistorico;

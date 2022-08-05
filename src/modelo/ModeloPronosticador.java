@@ -6,6 +6,7 @@ package modelo;
 
 import static java.lang.Float.parseFloat;
 import java.util.ArrayList;
+import java.util.Arrays;
 
 /**
  *
@@ -17,6 +18,7 @@ public class ModeloPronosticador
      {
          
      }
+     
      
      public float diferencia(float _value1, float _value2)
      {
@@ -42,6 +44,29 @@ public class ModeloPronosticador
      {
          int cant = _listaValores.size();
          return sumarLista(_listaValores)/cant;
+     }
+     
+     public ArrayList<ArrayList<String>> operarCantidadesVenta(ArrayList<String> _valores)
+     {
+         ArrayList<ArrayList<String>> lista = new ArrayList<ArrayList<String>>();
+         ArrayList<String> auxLista;
+         int cantidad = _valores.size();
+         for (int i = 0; i < cantidad; i++)
+         {
+             if (i == 0)
+             {  
+                 lista.add(new ArrayList<String>(Arrays.asList("", "")));
+             }
+             else
+             {
+                 float valor1 = parseFloat(_valores.get(i));
+                 float valor2 = parseFloat(_valores.get(i-1));
+                 
+                 lista.add(new ArrayList<String>(Arrays.asList(diferencia(valor1,valor2)+"", calcularPorcentajeVar(valor1,valor2)+"")));
+             }
+             
+         }
+         return lista;
      }
      
 }

@@ -6,6 +6,8 @@ package controlador;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import static java.lang.Float.parseFloat;
+import static java.lang.Integer.parseInt;
 import modelo.ModeloPronosticador;
 import vista.VentanaPrincipal;
 
@@ -21,6 +23,13 @@ public class ControladorPronosticador
     {
         this.modelo = _modelo;
         this.ventana = _ventana;
+        
+        ventana.setVisible(true);
+        ventana.setLocationRelativeTo(null);
+        
+        BtnListener btnListener = new BtnListener();
+        ventana.addBtnAgregarYearListener(btnListener);
+        ventana.addBtnBorrarYearListener(btnListener);
     }
     
     class BtnListener implements ActionListener
@@ -32,6 +41,59 @@ public class ControladorPronosticador
             if (e.getActionCommand().equalsIgnoreCase("Agregar Año"))
             {
                 
+                if (!"".equals(ventana.getTxtCantidadVenta()))
+                {
+                    float cantidadVentas = parseFloat(ventana.getTxtCantidadVenta());
+                    try 
+                    {
+
+
+                        System.out.println("Cantidad: "+ventana.getCantidadFilasHistorica());
+                        if (ventana.getCantidadFilasHistorica() == 0)
+                        {
+                            ventana.agregarFilaHistorica(1+"", cantidadVentas+"", "", "");
+                        }
+                        else
+                        {
+                            System.out.println(ventana.getValoresDeColumnaHistorico(1, 0));
+                            ventana.agregarFilaHistorica(ventana.getCantidadFilasHistorica()+1+"", cantidadVentas+"", "", "");
+                            ventana.llenarHistorico(modelo.operarCantidadesVenta(ventana.getValoresDeColumnaHistorico(1, 0)));
+                            
+                            /*
+                            int year = ventana.getCantidadFilasHistorica()+1;
+                            int cantidad = parseInt(ventana.getTxtCantidadVenta());
+                            float diferencia = modelo.diferencia(cantidadVentas, parseFloat(ventana.getValorHistorico(ventana.getCantidadFilasHistorica()-1, 1)));
+                            float porcentaje = modelo.calcularPorcentajeVar(cantidadVentas, parseFloat(ventana.getValorHistorico(ventana.getCantidadFilasHistorica()-1,1)));
+
+                            ventana.agregarFilaHistorica(year+"", cantidad+"", diferencia+"", porcentaje+"");
+                            */
+                            ventana.setTotalPorcentajes(modelo.sumarLista(ventana.getValoresDeColumnaHistorico(3, 1))+"");
+                            
+                            
+                        }
+                        ventana.setTxtCantidadVenta("");
+                    } 
+                    catch (Exception ex)
+                    {
+                        System.out.println("Algo falló");
+                        ex.printStackTrace();
+                    }
+                } else {
+                   System.out.println("Ingrese una cantidad de ventas");
+                }
+            } else if (e.getActionCommand().equalsIgnoreCase("Borrar año"))
+            {
+                if (ventana.getFilaSeleccionadaHistorico() == -1)
+                {
+                    System.out.println("Selecciona primero una fila");
+                }
+                else
+                {
+                    ventana.eliminarFilaHistorico(ventana.getFilaSeleccionadaHistorico());
+                    ventana.reorganizarYearsAscendente();
+                    ventana.llenarHistorico(modelo.operarCantidadesVenta(ventana.getValoresDeColumnaHistorico(1, 0)));
+                    ventana.setTotalPorcentajes(modelo.sumarLista(ventana.getValoresDeColumnaHistorico(3, 1))+"");
+                }
             }
         }
         
