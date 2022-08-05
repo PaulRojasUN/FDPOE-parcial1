@@ -8,6 +8,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import static java.lang.Float.parseFloat;
 import static java.lang.Integer.parseInt;
+import javax.swing.JOptionPane;
 import modelo.ModeloPronosticador;
 import vista.VentanaPrincipal;
 
@@ -30,6 +31,7 @@ public class ControladorPronosticador
         BtnListener btnListener = new BtnListener();
         ventana.addBtnAgregarYearListener(btnListener);
         ventana.addBtnBorrarYearListener(btnListener);
+        ventana.addBtnModificarYearListener(btnListener);
     }
     
     class BtnListener implements ActionListener
@@ -81,7 +83,8 @@ public class ControladorPronosticador
                 } else {
                    System.out.println("Ingrese una cantidad de ventas");
                 }
-            } else if (e.getActionCommand().equalsIgnoreCase("Borrar año"))
+            } 
+            else if (e.getActionCommand().equalsIgnoreCase("Borrar año"))
             {
                 if (ventana.getFilaSeleccionadaHistorico() == -1)
                 {
@@ -93,6 +96,28 @@ public class ControladorPronosticador
                     ventana.reorganizarYearsAscendente();
                     ventana.llenarHistorico(modelo.operarCantidadesVenta(ventana.getValoresDeColumnaHistorico(1, 0)));
                     ventana.setTotalPorcentajes(modelo.sumarLista(ventana.getValoresDeColumnaHistorico(3, 1))+"");
+                }
+            }
+            else if (e.getActionCommand().equalsIgnoreCase("Modifica Año"))
+            {
+                if (ventana.getFilaSeleccionadaHistorico() == -1)
+                {
+                    System.out.println("Selecciona primero una fila");
+                }
+                else
+                {
+                    int respuesta;
+                    try
+                    {
+                    respuesta = parseInt(JOptionPane.showInputDialog("Asigne la nueva cantidad"));
+                    
+                    ventana.setCantidadVentasHistorico(respuesta, ventana.getFilaSeleccionadaHistorico());
+                    ventana.llenarHistorico(modelo.operarCantidadesVenta(ventana.getValoresDeColumnaHistorico(1, 0)));
+                    ventana.setTotalPorcentajes(modelo.sumarLista(ventana.getValoresDeColumnaHistorico(3, 1))+"");
+                    } catch (Exception ex)
+                    {
+                        System.out.println("Ingrese un dato válido");
+                    }
                 }
             }
         }

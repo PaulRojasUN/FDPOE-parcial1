@@ -41,6 +41,12 @@ public class VentanaPrincipal extends javax.swing.JFrame {
         return jTableHistorico.getRowCount();
     }
     
+    public void setCantidadVentasHistorico(int _value, int _index)
+    {
+        modeloHistorico.setValueAt(_value+"", _index, 1);
+    }
+        
+    
     
     public void setTotalPorcentajes(String _txt)
     {
