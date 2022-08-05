@@ -80,6 +80,7 @@ public class ControladorPronosticador
                         System.out.println("Ingrese Valores Válidos");
                     }
                     ventana.setTxtCantidadVenta("");
+                    ventana.vaciarPronostico();
                 } else {
                    System.out.println("Ingrese una cantidad de ventas");
                 }
@@ -97,6 +98,7 @@ public class ControladorPronosticador
                     ventana.llenarHistorico(modelo.operarCantidadesVenta(ventana.getValoresDeColumnaHistorico(1, 0)));
                     ventana.setTotalPorcentajes(modelo.sumarLista(ventana.getValoresDeColumnaHistorico(3, 1))+"");
                 }
+                ventana.vaciarPronostico();
             }
             else if (e.getActionCommand().equalsIgnoreCase("Modifica Año"))
             {
@@ -127,6 +129,7 @@ public class ControladorPronosticador
                         System.out.println("Ingrese un dato válido");
                     }
                 }
+                ventana.vaciarPronostico();
             } 
             else if (e.getActionCommand().equalsIgnoreCase("Nuevo Pronóstico"))
             {
